@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Link, router } from "expo-router";
-import Header from "../../components/Header";
 import CircleButton from "../../components/CircleButton";
 import Icon from "../../components/Icon";
 
@@ -16,7 +15,6 @@ const handlePress = (): void => {
 const Create = (): JSX.Element => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="height">
-      <Header />
       <View style={styles.inputContainer}>
         <TextInput value="" style={styles.input} multiline />
       </View>
