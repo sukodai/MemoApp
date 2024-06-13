@@ -1,6 +1,13 @@
+/**
+ * firebaseのpathは、 型ファイルが見つかないバグの警告を消すため。
+ */
+
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+    }
   }
 }
