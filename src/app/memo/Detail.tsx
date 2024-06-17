@@ -1,24 +1,60 @@
+import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
-import { Link, router } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import CircleButton from "../../components/CircleButton";
 import Icon from "../../components/Icon";
+import { onSnapshot, doc } from "firebase/firestore";
+import { auth, db } from "../../config";
+import { type Memo } from "../../../types/memo";
 
-const handlePress = (): void => {
-  router.push("/memo/Edit");
+const handlePress = (id: string): void => {
+  router.push({ pathname: "/memo/Edit", params: { id: id } });
+  //router.push("/memo/Edit");
 };
 
 const Detail = () => {
+  const [memo, setMemo] = useState<Memo | null>(null);
+  const params = useLocalSearchParams();
+  console.log("params:", params);
+
+  useEffect(() => {
+    if (auth.currentUser === null) return;
+    const ref = doc(
+      db,
+      `users/${auth.currentUser.uid}/memos`,
+      String(params.id)
+    );
+    const unsubscribe = onSnapshot(ref, (memoDoc) => {
+      console.log("memoDoc", memoDoc.data());
+      const { bodyText, updatedAt } = memoDoc.data() as Memo;
+      setMemo({
+        id: memoDoc.id,
+        bodyText: bodyText,
+        updatedAt: updatedAt,
+      });
+    });
+    return unsubscribe;
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.memoHeader}>
-        <Text style={styles.memoTitle}>買い物リスト</Text>
-        <Text style={styles.memoDate}>2023年1月1日 10:00</Text>
+        <Text style={styles.memoTitle} numberOfLines={1}>
+          {memo?.bodyText}
+        </Text>
+        <Text style={styles.memoDate}>
+          {memo?.updatedAt?.toDate().toLocaleString("ja-JP")}
+        </Text>
       </View>
       <ScrollView style={styles.memoBody}>
-        <Text style={styles.memoBodyText}>あいうえお。かきくけこ</Text>
+        <Text style={styles.memoBodyText}>{memo?.bodyText}</Text>
       </ScrollView>
-      <CircleButton style={{ top: 60, bottom: "auto" }} onPress={handlePress}>
+      <CircleButton
+        style={{ top: 60, bottom: "auto" }}
+        onPress={() => {
+          handlePress(String(params.id));
+        }}
+      >
         {/* <Feather name="plus" size={40} /> */}
         <Icon name="pencil" size={40} color="#FFF" />
       </CircleButton>
