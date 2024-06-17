@@ -5,13 +5,27 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Link, router } from "expo-router";
 import Button from "../../components/Button";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config";
 
-const handrePress = (): void => {
+const handrePress = (email: string, password: string): void => {
   // 会員登録
-  router.push("/memo/List");
+  console.log(email, password);
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredentical) => {
+      console.log(userCredentical.user.uid);
+      //router.push("/memo/List"); // 画面遷移の履歴が積み上がるため
+      router.replace("/memo/List");
+    })
+    .catch((err: any) => {
+      console.log(err.code, err.message);
+      Alert.alert(err.message);
+    });
 };
 
 const SignUp = (): JSX.Element => {
@@ -44,10 +58,15 @@ const SignUp = (): JSX.Element => {
           placeholder="Password"
           textContentType="password"
         />
-        <Button label="Submit" onPress={handrePress} />
+        <Button
+          label="Submit"
+          onPress={() => {
+            handrePress(email, password);
+          }}
+        />
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already registered?</Text>
-          <Link href="/auth/log_in" asChild={true}>
+          <Link href="/auth/log_in" asChild={true} replace={true}>
             <TouchableOpacity>
               <Text style={styles.footerLink}>Log In!</Text>
             </TouchableOpacity>
