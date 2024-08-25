@@ -10,7 +10,8 @@
         "EXPO_PUBLIC_FB_MESSAGING_SENDER_ID": "44509950208",
         "EXPO_PUBLIC_FB_APP_ID": "1:44509950208:web:6b010d0c7f657bfe58c3e5",
         "EXPO_PUBLIC_FB_MESUREMENT_ID": "G-RWZXHV0F3V"
-      }
+      },
+      "autoIncrement": true
     },
     "preview": {
       "node": "18.15.0",
