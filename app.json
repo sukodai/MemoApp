@@ -2,10 +2,8 @@
   "expo": {
     "name": "MemoApp",
     "slug": "MemoApp",
-    "scheme": [
-      "memoapp"
-    ],
-    "version": "1.1.7",
+    "scheme": ["memoapp"],
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,12 +14,10 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.sukodai.memoapp",
-      "buildNumber": "1.1.7"
+      "bundleIdentifier": "com.sukodai.memoapp"
     },
     "android": {
       "package": "com.sukodai.memoapp",
-      "versionCode": 7,
       "permissions": [],
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon_adaptive_foreground.png",
